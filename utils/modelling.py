@@ -7,7 +7,7 @@ import torch.optim
 import torch.utils.data
 import torchvision.models as models
 
-from meters import AverageMeter, ProgressMeter
+from utils.meters import AverageMeter, ProgressMeter
 
 
 

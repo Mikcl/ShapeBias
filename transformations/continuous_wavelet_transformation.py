@@ -1,7 +1,7 @@
 import numpy as np
 from functools import lru_cache
 
-from mother_wavelets import wavelets
+from transformations.mother_wavelets import wavelets
 
 '''
     A simple implementation of 2D continuous wavelet transform,

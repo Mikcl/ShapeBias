@@ -1,5 +1,5 @@
-import difference_of_gaussian_transformation
-import continuous_wavelet_transformation
+from transformations.difference_of_gaussian_transformation import dog
+from transformations.continuous_wavelet_transformation import cwt_2d
 import numpy as np
 
 class DOG(object):
@@ -17,7 +17,7 @@ class DOG(object):
             ### Return:
                 list(list(float)) - difference of gaussian with predefined params applied.
         '''
-        return difference_of_gaussian_transformation.dog(np.array(image), self.sigma, self.k)
+        return dog(np.array(image), self.sigma, self.k)
 
 
 class Gabor(object):
@@ -43,7 +43,7 @@ class Gabor(object):
         transformed = []
         for channel in range(image.shape[2]):
 
-            cwt = continuous_wavelet_transformation.cwt_2d(image[:,:,channel], 'gabor', multiplier=1., scales=self.scales, orientations=self.orientations)
+            cwt = cwt_2d(image[:,:,channel], 'gabor', multiplier=1., scales=self.scales, orientations=self.orientations)
             # take cwt.imag or cwt.real ?
             cwt = cwt.imag
 
