@@ -46,8 +46,8 @@ def set_args(parser):
                         help='number of channels (default: 3)')
     parser.add_argument('-d', '--dataset', default=None, type=int,
                         help='which dataset to train on, default- None (define custom path to directory), 0 - CIFAR10, 1 - CIFAR100')
-    parser.add_argument('data', metavar='DIR',
-                        help='path to dataset')
+    parser.add_argument('--data', metavar='DIR',
+                        help='path to custom dataset and where output folder is')
     parser.add_argument('--concat', dest='concat', action='store_true',
                         help='concat transformed data')
     parser.add_argument('--same', dest='same', action='store_true',

@@ -23,6 +23,16 @@ def get_name(args):
     scales = args.scales
     orientations = args.orientations
 
+    own = args.own
+
+    f = 'F' if finetune else ''
+
+    if own and finetune:
+        return f + str(own)
+    
+    if own:
+        return str(own)
+
     concat_or_same = 'original'
     if concat:
         concat_or_same = 'concat'
@@ -41,10 +51,9 @@ def get_name(args):
         if orientations:
             transform += f'u({str(orientations)})'
 
-    f = 'F' if finetune else ''
 
-    name = str(experiment_dataset) + '-' + str(arch) + '-' \
-           + concat_or_same + '-' + transform + '-' + f
+    name = f + str(experiment_dataset) + '-' + str(arch) + '-' \
+           + concat_or_same + '-' + transform
     
     return name
 
