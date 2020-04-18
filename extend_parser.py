@@ -45,7 +45,9 @@ def set_args(parser):
     parser.add_argument('-c', '--channels', default=3, type=int,
                         help='number of channels (default: 3)')
     parser.add_argument('-d', '--dataset', default=None, type=int,
-                        help='which dataset to train on')
+                        help='which dataset to train on, default- None (define custom path to directory), 0 - CIFAR10, 1 - CIFAR100')
+    parser.add_argument('data', metavar='DIR',
+                        help='path to dataset')
     parser.add_argument('--concat', dest='concat', action='store_true',
                         help='concat transformed data')
     parser.add_argument('--same', dest='same', action='store_true',
@@ -60,7 +62,5 @@ def set_args(parser):
                         help='scales (list) for the 2D Gabor Wavelet: -s 2 2.5')
     parser.add_argument('-u','--orientations', nargs='+', default=None,
                         help='orientations (list) for the 2D Gabor Wavelet: -u 1 2 3')
-    parser.add_argument('data', metavar='DIR',
-                        help='path to dataset')
 
     return parser

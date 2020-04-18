@@ -1,5 +1,4 @@
 import argparse
-import time
 
 import torch
 import torch.nn as nn
@@ -15,6 +14,9 @@ from utils.meters import AverageMeter, ProgressMeter
 import utils.modelling as modelling
 import extend_parser
 
+'''
+Main driver code to run experiments
+'''
 
 model_names = sorted(name for name in models.__dict__
     if name.islower() and not name.startswith("__")
@@ -43,7 +45,7 @@ def main_worker(ngpus_per_node, args):
         print("Use GPU: {} for training".format(args.gpu))
 
     # Create file and store in args.data directory...
-    filename = '{}{}-{}.csv'.format(str(args.data),str(args.arch), time.strftime("%Y%m%d-%H%M%S"))
+    filename = '{}.csv'.format(experiments.get_name(args))
     print ("Creating {} to store accuracy results".format(filename))
     results = open(filename, 'w+')
     results.write("Epoch,Top1,Top5\n")

@@ -1,8 +1,52 @@
 import os
+import time
+
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
 from transformations.custom_transforms import DOG, Gabor
 
+'''
+Defining specific experiments
+'''    
+
+# Get experiment name
+def get_name(args):
+    arch = args.arch
+    # timestamp = time.strftime("%Y%m%d-%H%M%S")
+    finetune = args.finetune
+    experiment_dataset = args.dataset
+    concat = args.concat
+    same = args.same
+    DOG = args.DOG
+    DOG_options = args.options
+    gabor = args.gabor
+    scales = args.scales
+    orientations = args.orientations
+
+    concat_or_same = 'original'
+    if concat:
+        concat_or_same = 'concat'
+    elif same:
+        concat_or_same = 'same'
+
+    transform = 'None'
+    if DOG:
+        transform = 'DOG:'
+        if DOG_options:
+            transform += f'({str(DOG_options)})'
+    elif gabor:
+        transform = 'gabor:'
+        if scales:
+            transform += f'v({str(scales)})'
+        if orientations:
+            transform += f'u({str(orientations)})'
+
+    f = 'F' if finetune else ''
+
+    name = str(experiment_dataset) + '-' + str(arch) + '-' \
+           + concat_or_same + '-' + transform + '-' + f
+    
+    return name
 
 # Datasets for differnet experiments
 def get_data_set(experiment, concatenante, transform, additional_transform, validation_transform, directory='./data'):
@@ -26,7 +70,7 @@ def get_data_set(experiment, concatenante, transform, additional_transform, vali
             valdir = os.path.join(directory, 'val')
     
             train_dataset = define_dataset(traindir, transform)
-            test_dataset = define_dataset(valdir, transform)
+            test_dataset = define_dataset(valdir, validation_transform)
 
             if concatenante:
                 transformed_train_dataset = define_dataset(traindir, additional_transform)
@@ -34,7 +78,7 @@ def get_data_set(experiment, concatenante, transform, additional_transform, vali
 
     elif experiment == 0:
             train_dataset = datasets.CIFAR10(root=directory, train=True, download=True, transform=transform)
-            test_dataset = datasets.CIFAR10(root=directory, train=False, download=True, transform=transform)
+            test_dataset = datasets.CIFAR10(root=directory, train=False, download=True, transform=validation_transform)
             
             if concatenante:
                 transformed_train_dataset = datasets.CIFAR10(root=directory, train=True, download=True, transform=additional_transform)
@@ -42,7 +86,7 @@ def get_data_set(experiment, concatenante, transform, additional_transform, vali
 
     elif experiment == 1:
             train_dataset = datasets.CIFAR100(root=directory, train=True, download=True, transform=transform)
-            test_dataset = datasets.CIFAR100(root=directory, train=False, download=True, transform=transform)
+            test_dataset = datasets.CIFAR100(root=directory, train=False, download=True, transform=validation_transform)
             
             if concatenante:
                 transformed_train_dataset = datasets.CIFAR100(root=directory, train=True, download=True, transform=additional_transform)
@@ -56,14 +100,12 @@ def define_dataset(directory, augmentations):
 
         ### Arguments:
             directory: str - directory where the dataset is located.
-            augmentations: list('Transform') - list of augmentations to apply.
+            augmentations: 'transforms.Compose'  - a list of Transforms to apply.
         
         ### Returns:
             'torchvision.dataset' - dataset image folder with augmentations to apply
     '''
-    dataset = datasets.ImageFolder(
-        directory,
-        transforms.Compose(augmentations))
+    dataset = datasets.ImageFolder(directory,augmentations)
     
     return dataset
 
@@ -77,6 +119,13 @@ def get_transformation_type(args):
         ### Returns:
             Transform object
     '''
+    if args.DOG:
+        if not args.options:
+            return DOG()
+        elif len(args.options) == 1:
+            return DOG(sigma=float(args.options[0]))
+        else:
+            return DOG(sigma=float(args.options[0]), k=float(args.options[1]))
     if args.gabor:
         if not args.scales and not args.orientations:
             return Gabor()
@@ -86,13 +135,6 @@ def get_transformation_type(args):
             return Gabor(orientations=[float(u) for u in args.orientations])
         else:
             return Gabor(scales=[float(s) for s in args.scales] , orientations=[float(u) for u in args.orientations])
-    if args.DOG:
-        if not args.options:
-            return DOG()
-        elif len(args.options) == 1:
-            return DOG(sigma=float(args.options[0]))
-        else:
-            return DOG(sigma=float(args.options[0]), k=float(args.options[1]))
 
     return None
 

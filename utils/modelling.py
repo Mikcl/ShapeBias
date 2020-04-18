@@ -9,6 +9,9 @@ import torchvision.models as models
 
 from utils.meters import AverageMeter, ProgressMeter
 
+'''
+Collection of methods to apply to CNNs/models
+'''
 
 
 def train_model(model, train_dataset, val_loader, start_epoch, epochs, optimizer, criterion, filename, args, acc=0.0):
