@@ -10,10 +10,8 @@ def set_args(parser):
     '''
     parser.add_argument('-j', '--workers', default=4, type=int, metavar='N',
                     help='number of data loading workers (default: 4)')
-    parser.add_argument('--epochs', default=90, type=int, metavar='N',
+    parser.add_argument('--epochs', default=74, type=int, metavar='N',
                         help='number of total epochs to run')
-    parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
-                        help='manual epoch number (useful on restarts)')
     parser.add_argument('-b', '--batch-size', default=256, type=int,
                         metavar='N',
                         help='mini-batch size (default: 256), this is the total '
@@ -28,7 +26,7 @@ def set_args(parser):
                         dest='weight_decay')
     parser.add_argument('-p', '--print-freq', default=10, type=int,
                         metavar='N', help='print frequency (default: 10)')
-    parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true',
+    parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true', metavar='EV',
                         help='evaluate model on validation set')
     parser.add_argument('--pretrained', dest='pretrained', action='store_true',
                         help='use pre-trained model')
@@ -38,31 +36,29 @@ def set_args(parser):
                         help='path to your own given model state dict (note arch of this model must match -a)')
     parser.add_argument('-f', '--finetune', dest='finetune', action='store_true',
                         help='fine-tune model fc layer on training set')
-    parser.add_argument('-l', '--loadfinetuned', default=None, type=int,
+    parser.add_argument('-l', '--loadfinetuned', default=None, type=int, metavar='LF',
                         help='use fintuned own model with defined number of output classes')
-    parser.add_argument('-t', '--test', dest='test', action='store_true',
-                        help='test the loaded model')
     parser.add_argument('-c', '--channels', default=3, type=int,
                         help='number of channels (default: 3)')
     parser.add_argument('-d', '--dataset', default=None, type=int,
                         help='which dataset to train on, default- None (define custom path to directory), 0 - CIFAR10, 1 - CIFAR100')
-    parser.add_argument('--data', metavar='DIR',
+    parser.add_argument('--data', metavar='DATA', default='./',
                         help='path to custom dataset and where output folder is')
     parser.add_argument('--concat', dest='concat', action='store_true',
-                        help='concat transformed data')
+                        help='concat transformed data with orignal data')
     parser.add_argument('--same', dest='same', action='store_true',
-                        help='train and test on same dataset, primarily used from custom transformations') 
-    parser.add_argument('--DOG', dest='DOG', action='store_true',
+                        help='train and validated on same (type of transformation) dataset, primarily used from custom transformations') 
+    parser.add_argument('--DOG', dest='DOG', action='store_true', metavar='DoG',
                         help='DOG transformation, use --options for non default hyper paramaters, [sigma k]')
-    parser.add_argument('-o','--options', nargs='+', default=None,
+    parser.add_argument('-o','--options', nargs='+', default=None, metavar='O',
                         help='options (list) for the transformation, pass as: -o s k')
-    parser.add_argument('--gabor', dest='gabor', action='store_true',
+    parser.add_argument('--gabor', dest='gabor', action='store_true', metavar='G',
                         help='gabor 2D CWT')
-    parser.add_argument('-s','--scales', nargs='+', default=None,
+    parser.add_argument('-s','--scales', nargs='+', default=None, metavar='S',
                         help='scales (list) for the 2D Gabor Wavelet: -s 2 2.5')
-    parser.add_argument('-u','--orientations', nargs='+', default=None,
+    parser.add_argument('-u','--orientations', nargs='+', default=None, metavar='U',
                         help='orientations (list) for the 2D Gabor Wavelet: -u 1 2 3')
-    parser.add_argument('--save', dest='save', action='store_true',
-                        help='save the model')
+    parser.add_argument('--save', dest='save', action='store_true', metavar='COLLAB',
+                        help='save the model and csv to google drive [only in collab]')
 
     return parser
