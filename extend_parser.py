@@ -26,7 +26,7 @@ def set_args(parser):
                         dest='weight_decay')
     parser.add_argument('-p', '--print-freq', default=10, type=int,
                         metavar='N', help='print frequency (default: 10)')
-    parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true', metavar='EV',
+    parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true',
                         help='evaluate model on validation set')
     parser.add_argument('--pretrained', dest='pretrained', action='store_true',
                         help='use pre-trained model')
@@ -48,17 +48,17 @@ def set_args(parser):
                         help='concat transformed data with orignal data')
     parser.add_argument('--same', dest='same', action='store_true',
                         help='train and validated on same (type of transformation) dataset, primarily used from custom transformations') 
-    parser.add_argument('--DOG', dest='DOG', action='store_true', metavar='DoG',
+    parser.add_argument('--DOG', dest='DOG', action='store_true',
                         help='DOG transformation, use --options for non default hyper paramaters, [sigma k]')
     parser.add_argument('-o','--options', nargs='+', default=None, metavar='O',
                         help='options (list) for the transformation, pass as: -o s k')
-    parser.add_argument('--gabor', dest='gabor', action='store_true', metavar='G',
+    parser.add_argument('--gabor', dest='gabor', action='store_true',
                         help='gabor 2D CWT')
     parser.add_argument('-s','--scales', nargs='+', default=None, metavar='S',
                         help='scales (list) for the 2D Gabor Wavelet: -s 2 2.5')
     parser.add_argument('-u','--orientations', nargs='+', default=None, metavar='U',
                         help='orientations (list) for the 2D Gabor Wavelet: -u 1 2 3')
-    parser.add_argument('--save', dest='save', action='store_true', metavar='COLLAB',
+    parser.add_argument('--save', dest='save', action='store_true',
                         help='save the model and csv to google drive [only in collab]')
 
     return parser
