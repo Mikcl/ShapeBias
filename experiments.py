@@ -9,53 +9,60 @@ from transformations.custom_transforms import DOG, Gabor
 Defining specific experiments
 '''    
 
-# Get experiment name
-def get_name(args):
-    arch = args.arch
-    # timestamp = time.strftime("%Y%m%d-%H%M%S")
-    finetune = args.finetune
-    experiment_dataset = args.dataset
-    concat = args.concat
-    same = args.same
-    DOG = args.DOG
-    DOG_options = args.options
-    gabor = args.gabor
-    scales = args.scales
-    orientations = args.orientations
+class Experiment(object):
+    '''
+        Maintain experiment type
+    '''
+    def __init__(self, args):
+        self.arch = args.arch
+        self.finetune = args.finetune
+        self.experiment_dataset = args.dataset
+        self.concat = args.concat
+        self.same = args.same
+        self.DOG = args.DOG
+        self.DOG_options = args.options
+        self.gabor = args.gabor
+        self.scales = args.scales
+        self.orientations = args.orientations
+        self.own = args.own
 
-    own = args.own
+        self.name = get_name()
+        
+    def get_name(self):
+        '''
+            Given type of experiment, return information about experiment as string.
+        '''
+        f = 'F' if self.finetune else ''
 
-    f = 'F' if finetune else ''
+        if self.own and self.finetune:
+            return f + str(self.own)
 
-    if own and finetune:
-        return f + str(own)
-    
-    if own:
-        return str(own)
+        if self.own:
+            return str(own)
 
-    concat_or_same = 'original'
-    if concat:
-        concat_or_same = 'concat'
-    elif same:
-        concat_or_same = 'same'
+        concat_or_same = 'original'
+        if self.concat:
+            concat_or_same = 'concat'
+        elif self.same:
+            concat_or_same = 'same'
 
-    transform = 'None'
-    if DOG:
-        transform = 'DOG:'
-        if DOG_options:
-            transform += f'({str(DOG_options)})'
-    elif gabor:
-        transform = 'gabor:'
-        if scales:
-            transform += f'v({str(scales)})'
-        if orientations:
-            transform += f'u({str(orientations)})'
+        transform = 'None'
+        if self.DOG:
+            transform = 'DOG:'
+            if self.DOG_options:
+                transform += f'({str(self.DOG_options)})'
+        elif self.gabor:
+            transform = 'gabor:'
+            if self.scales:
+                transform += f'v({str(self.scales)})'
+            if self.orientations:
+                transform += f'u({str(self.orientations)})'
 
 
-    name = f + str(experiment_dataset) + '-' + str(arch) + '-' \
-           + concat_or_same + '-' + transform
-    
-    return name
+        name = f + str(self.experiment_dataset) + '-' + str(self.arch) + '-' \
+            + concat_or_same + '-' + transform
+        
+        return name    
 
 # Datasets for differnet experiments
 def get_data_set(experiment, concatenante, transform, additional_transform, validation_transform, directory='./data'):

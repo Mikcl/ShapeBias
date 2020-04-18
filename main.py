@@ -10,6 +10,7 @@ import torchvision.models as models
 import torchvision.transforms as transforms
 
 import experiments
+from experiments import Experiment
 from utils.meters import AverageMeter, ProgressMeter
 import utils.modelling as modelling
 import extend_parser
@@ -44,8 +45,10 @@ def main_worker(ngpus_per_node, args):
     if args.gpu is not None:
         print("Use GPU: {} for training".format(args.gpu))
 
+    experiment = Experiment(args)
+
     # Create file and store in args.data directory...
-    filename = '{}.csv'.format(experiments.get_name(args))
+    filename = f'{experiment.name}.csv'
     print ("Creating {} to store accuracy results".format(filename))
     results = open(filename, 'w+')
     results.write("Epoch,Top1,Top5\n")
