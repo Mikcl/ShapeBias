@@ -1,4 +1,5 @@
 import argparse
+import shutil
 
 import torch
 import torch.nn as nn
@@ -34,6 +35,10 @@ parser = extend_parser.set_args(parser)
 
 def main():
     args = parser.parse_args()
+
+    if args.save:
+        from google.colab import drive
+        drive.mount('/content/gdrive')   
 
     ngpus_per_node = torch.cuda.device_count()
 
@@ -84,7 +89,7 @@ def main_worker(ngpus_per_node, args):
 
     # Train your own model
     if args.own == None:
-        modelling.train_model(model, train_dataset, val_loader, args.start_epoch, args.epochs, optimizer, criterion, filename, args)
+        modelling.train_model(model, train_dataset, val_loader, args.start_epoch, args.epochs, optimizer, criterion, filename, experiment.name, args)
     
     # Fine Tune the model.
     if args.finetune:
@@ -106,8 +111,14 @@ def main_worker(ngpus_per_node, args):
                             momentum=args.momentum,
                             weight_decay=args.weight_decay)
         
-        modelling.train_model(model, train_dataset, val_loader, args.start_epoch, args.epochs, optimizer, criterion, filename, args)
-        
+        modelling.train_model(model, train_dataset, val_loader, args.start_epoch, args.epochs, optimizer, criterion, filename, experiment.name, args)
+
+    if args.save:
+        drive_path = f'/content/gdrive/My Drive/{experiment.name}.pth.tar'
+        shutil.copyfile(f'{experiment.name}.pth.tar', drive_path)
+        drive_path = f'/content/gdrive/My Drive/{experiment.name}.csv'
+        shutil.copyfile(f'{experiment.name}.csv', drive_path)
+
 
 if __name__ == '__main__':
     main()

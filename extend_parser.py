@@ -62,5 +62,7 @@ def set_args(parser):
                         help='scales (list) for the 2D Gabor Wavelet: -s 2 2.5')
     parser.add_argument('-u','--orientations', nargs='+', default=None,
                         help='orientations (list) for the 2D Gabor Wavelet: -u 1 2 3')
+    parser.add_argument('--save', dest='save', action='store_true',
+                        help='save the model')
 
     return parser

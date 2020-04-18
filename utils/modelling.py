@@ -14,7 +14,7 @@ Collection of methods to apply to CNNs/models
 '''
 
 
-def train_model(model, train_dataset, val_loader, start_epoch, epochs, optimizer, criterion, filename, args, acc=0.0):
+def train_model(model, train_dataset, val_loader, start_epoch, epochs, optimizer, criterion, filename, model_name, args, acc=0.0):
     """
         Wrapper method for training a model.
         Arguments: 
@@ -26,6 +26,7 @@ def train_model(model, train_dataset, val_loader, start_epoch, epochs, optimizer
             optimizer - torch.optim: optimizer to use
             criterion - torch.nn: Loss Function to use.
             filename - str: name of file to wrote training data to. 
+            model_name - str: name of file to write the model to. 
             args - dict: arguments passed. 
             acc - float: best accuracy of model seen so far.
     """
@@ -50,7 +51,7 @@ def train_model(model, train_dataset, val_loader, start_epoch, epochs, optimizer
         if (acc > best):
             best = acc
             state = model.state_dict()
-            save(state)
+            save(state,model_name)
 
 
 def train(train_loader, model, criterion, optimizer, epoch, args):
@@ -172,12 +173,12 @@ def validate(val_loader, model, criterion, args, filename, epoch=-1):
 
 
 
-def save(state, filename='checkpoint.pth.tar'):
+def save(state, model_name, filename='checkpoint.pth.tar'):
     """
         save state to file directory 
     """
     torch.save(state, filename)
-    shutil.copyfile(filename, 'model_best.pth.tar')
+    shutil.copyfile(filename, f'{model_name}.pth.tar')
 
 def adjust_learning_rate(optimizer, epoch, args):
     """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
