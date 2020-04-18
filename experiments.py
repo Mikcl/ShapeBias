@@ -116,66 +116,60 @@ class Experiment(object):
             # No additional data
             return  transforms.Compose(original_transformation), None, transforms.Compose(original_transformation)
 
-# Datasets for differnet experiments
-def get_data_set(experiment, concatenante, transform, additional_transform, validation_transform, directory='./data'):
-    '''
-        Gets the training and test dataset for an experiment, applying relevant transformation and concatenations
+    # Datasets for differnet experiments
+    def get_data_set(self, transform, additional_transform, validation_transform):
+        '''
+            Gets the training and test dataset for an experiment, applying relevant transformation and concatenations
 
-        ### Arguments:
-            experiment: int - number pointing to the original dataset experiment, Or None with custom dataset.
-            concatenante: bool - true will combine the experiment dataset with the additional_transform-transformed dataset
-            transform: list('Transform') - list of Transform objects - applied to training
-            additional_transform: list('Transform') - list of Transform objects - applied to training set
-            validation_transform: list('Transform') - list of Transform objects to be applied to validation set
-            directory: str - path from root to the dataset, supply for custom dataset
-        
-        ### Returns:
-            'torchvision.dataset', 'torchvision.dataset' - pair corresponding to training and validation set
-    '''
-    if experiment == None:
-        # Custom Dataset - with directory/train and directory/val sub folders
-            traindir = os.path.join(directory, 'train')
-            valdir = os.path.join(directory, 'val')
-    
-            train_dataset = define_dataset(traindir, transform)
-            test_dataset = define_dataset(valdir, validation_transform)
-
-            if concatenante:
-                transformed_train_dataset = define_dataset(traindir, additional_transform)
-                train_dataset = train_dataset + transformed_train_dataset 
-
-    elif experiment == 0:
-            train_dataset = datasets.CIFAR10(root=directory, train=True, download=True, transform=transform)
-            test_dataset = datasets.CIFAR10(root=directory, train=False, download=True, transform=validation_transform)
+            ### Arguments:
+                transform: list('Transform') - list of Transform objects - applied to training
+                additional_transform: list('Transform') - list of Transform objects - applied to training set
+                validation_transform: list('Transform') - list of Transform objects to be applied to validation set
             
-            if concatenante:
-                transformed_train_dataset = datasets.CIFAR10(root=directory, train=True, download=True, transform=additional_transform)
-                train_dataset = train_dataset + transformed_train_dataset
-
-    elif experiment == 1:
-            train_dataset = datasets.CIFAR100(root=directory, train=True, download=True, transform=transform)
-            test_dataset = datasets.CIFAR100(root=directory, train=False, download=True, transform=validation_transform)
-            
-            if concatenante:
-                transformed_train_dataset = datasets.CIFAR100(root=directory, train=True, download=True, transform=additional_transform)
-                train_dataset = train_dataset + transformed_train_dataset
-
-    return train_dataset, test_dataset
-
-def define_dataset(directory, augmentations):
-    '''
-        Defines a custom dataset. 
-
-        ### Arguments:
-            directory: str - directory where the dataset is located.
-            augmentations: 'transforms.Compose'  - a list of Transforms to apply.
+            ### Returns:
+                'torchvision.dataset', 'torchvision.dataset' - pair corresponding to training and validation set
+        '''
+        if self.experiment_dataset == None:
+            # Custom Dataset - with directory/train and directory/val sub folders
+                traindir = os.path.join(self.directory, 'train')
+                valdir = os.path.join(self.directory, 'val')
         
-        ### Returns:
-            'torchvision.dataset' - dataset image folder with augmentations to apply
-    '''
-    dataset = datasets.ImageFolder(directory,augmentations)
-    
-    return dataset
+                train_dataset = self.define_dataset(traindir, transform)
+                test_dataset = define_dataset(valdir, validation_transform)
 
+                if self.concat:
+                    transformed_train_dataset = define_dataset(traindir, additional_transform)
+                    train_dataset = train_dataset + transformed_train_dataset 
 
+        elif self.experiment_dataset == 0:
+                train_dataset = datasets.CIFAR10(root=self.directory, train=True, download=True, transform=transform)
+                test_dataset = datasets.CIFAR10(root=self.directory, train=False, download=True, transform=validation_transform)
+                
+                if self.concat:
+                    transformed_train_dataset = datasets.CIFAR10(root=self.directory, train=True, download=True, transform=additional_transform)
+                    train_dataset = train_dataset + transformed_train_dataset
 
+        elif self.experiment_dataset == 1:
+                train_dataset = datasets.CIFAR100(root=self.directory, train=True, download=True, transform=transform)
+                test_dataset = datasets.CIFAR100(root=self.directory, train=False, download=True, transform=validation_transform)
+                
+                if self.concat:
+                    transformed_train_dataset = datasets.CIFAR100(root=self.directory, train=True, download=True, transform=additional_transform)
+                    train_dataset = train_dataset + transformed_train_dataset
+
+        return train_dataset, test_dataset
+
+    def define_dataset(self, directory, augmentations):
+        '''
+            Defines a custom dataset. 
+
+            ### Arguments:
+                directory: str - directory where the dataset is located.
+                augmentations: 'transforms.Compose'  - a list of Transforms to apply.
+            
+            ### Returns:
+                'torchvision.dataset' - dataset image folder with augmentations to apply
+        '''
+        dataset = datasets.ImageFolder(directory,augmentations)
+        
+        return dataset

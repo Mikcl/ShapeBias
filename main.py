@@ -71,7 +71,7 @@ def main_worker(ngpus_per_node, args):
     transform, additional_transform, validation_transform = experiment.get_transformation_set()
 
     # Get Data
-    train_dataset, val_dataset = experiments.get_data_set(args.dataset, args.concat, transform, additional_transform, validation_transform ,args.data)
+    train_dataset, val_dataset = experiment.get_data_set(transform, additional_transform, validation_transform)
     
     val_loader = torch.utils.data.DataLoader(
         val_dataset, batch_size=args.batch_size, shuffle=False,
