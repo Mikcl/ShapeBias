@@ -25,8 +25,9 @@ class Experiment(object):
         self.scales = args.scales
         self.orientations = args.orientations
         self.own = args.own
+        self.directory = args.data
 
-        self.name = get_name()
+        self.name = self.get_name()
         
     def get_name(self):
         '''
