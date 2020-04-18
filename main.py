@@ -68,7 +68,7 @@ def main_worker(ngpus_per_node, args):
     cudnn.benchmark = True
 
     # Get Transformations.
-    transform, additional_transform, validation_transform = experiments.get_transformation_set(args)
+    transform, additional_transform, validation_transform = experiment.get_transformation_set()
 
     # Get Data
     train_dataset, val_dataset = experiments.get_data_set(args.dataset, args.concat, transform, additional_transform, validation_transform ,args.data)

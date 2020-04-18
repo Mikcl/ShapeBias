@@ -65,6 +65,57 @@ class Experiment(object):
         
         return name    
 
+    def get_transformation_type(self):
+        '''
+            Get custom transformation to apply, with hyperparameters passed. 
+            
+            ### Returns:
+                Transform object
+        '''
+        if self.DOG:
+            if not self.DOG_options:
+                return DOG()
+            elif len(self.DOG_options) == 1:
+                return DOG(sigma=float(self.DOG_options[0]))
+            else:
+                return DOG(sigma=float(self.DOG_options[0]), k=float(self.DOG_options[1]))
+        if self.gabor:
+            if not self.scales and not self.orientations:
+                return Gabor()
+            if self.scales and not self.orientations:
+                return Gabor(scales=[float(s) for s in self.scales])
+            if not self.scales and self.orientations:
+                return Gabor(orientations=[float(u) for u in self.orientations])
+            else:
+                return Gabor(scales=[float(s) for s in self.scales] , orientations=[float(u) for u in self.orientations])
+
+        return None
+
+    def get_transformation_set(self):
+        '''
+            Gets the transformations to apply for the experiment training, additional and validation set
+
+            ### Returns:
+                train, additional, validation - transformations to apply respectively 
+        '''
+        # defined normalization values from image-net.
+        normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                        std=[0.229, 0.224, 0.225])
+
+        original_transformation = [transforms.ToTensor(), normalize]
+        custom_transform = self.get_transformation_type()
+        additional_transformation = [custom_transform,transforms.ToTensor()]
+
+        if self.same and custom_transform:
+            # Only train and test on a custom transformation
+            return  transforms.Compose(additional_transformation), None, transforms.Compose(additional_transformation)
+        if custom_transform:
+            # Concat with custom transform
+            return  transforms.Compose(original_transformation), transforms.Compose(additional_transformation), transforms.Compose(original_transformation)
+        else: 
+            # No additional data
+            return  transforms.Compose(original_transformation), None, transforms.Compose(original_transformation)
+
 # Datasets for differnet experiments
 def get_data_set(experiment, concatenante, transform, additional_transform, validation_transform, directory='./data'):
     '''
@@ -126,56 +177,5 @@ def define_dataset(directory, augmentations):
     
     return dataset
 
-def get_transformation_type(args):
-    '''
-        Get custom transformation to apply, with hyperparameters passed. 
-        
-        ### Arguments:
-            args: dict.
-        
-        ### Returns:
-            Transform object
-    '''
-    if args.DOG:
-        if not args.options:
-            return DOG()
-        elif len(args.options) == 1:
-            return DOG(sigma=float(args.options[0]))
-        else:
-            return DOG(sigma=float(args.options[0]), k=float(args.options[1]))
-    if args.gabor:
-        if not args.scales and not args.orientations:
-            return Gabor()
-        if args.scales and not args.orientations:
-            return Gabor(scales=[float(s) for s in args.scales])
-        if not args.scales and args.orientations:
-            return Gabor(orientations=[float(u) for u in args.orientations])
-        else:
-            return Gabor(scales=[float(s) for s in args.scales] , orientations=[float(u) for u in args.orientations])
 
-    return None
 
-def get_transformation_set(args):
-    '''
-        ### Arguments:
-            args: dict - 
-        ### Returns:
-            train, additional, validation - transformations to apply respectively 
-    '''
-    # defined normalization values from image-net.
-    normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                                     std=[0.229, 0.224, 0.225])
-
-    original_transformation = [transforms.ToTensor(), normalize]
-    custom_transform = get_transformation_type(args)
-    additional_transformation = [custom_transform,transforms.ToTensor()]
-
-    if args.same and custom_transform:
-        # Only train and test on a custom transformation
-        return  transforms.Compose(additional_transformation), None, transforms.Compose(additional_transformation)
-    if custom_transform:
-        # Concat with custom transform
-        return  transforms.Compose(original_transformation), transforms.Compose(additional_transformation), transforms.Compose(original_transformation)
-    else: 
-        # No additional data
-        return  transforms.Compose(original_transformation), None, transforms.Compose(original_transformation)
