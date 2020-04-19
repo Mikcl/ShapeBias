@@ -36,7 +36,7 @@ parser = extend_parser.set_args(parser)
 def main():
     args = parser.parse_args()
 
-    if args.save_model or args.sava_csv:
+    if args.savemodel or args.savecsv:
         from google.colab import drive
         drive.mount('/content/gdrive')   
 
@@ -113,10 +113,10 @@ def main_worker(ngpus_per_node, args):
         
         modelling.train_model(model, train_dataset, val_loader, args.start_epoch, args.epochs, optimizer, criterion, filename, experiment.name, args)
 
-    if args.save_model:
+    if args.savemodel:
         drive_path = f'/content/gdrive/My Drive/{experiment.name}.pth.tar'
         shutil.copyfile(f'{experiment.name}.pth.tar', drive_path)
-    if args.save_csv:
+    if args.savecsv:
         drive_path = f'/content/gdrive/My Drive/{experiment.name}.csv'
         shutil.copyfile(f'{experiment.name}.csv', drive_path)
 

@@ -68,8 +68,8 @@ optional arguments:
                         scales (list) for the 2D Gabor Wavelet: -s 2 2.5
   -u U [U ...], --orientations U [U ...]
                         orientations (list) for the 2D Gabor Wavelet: -u 1 2 3
-  --save-model          save the model to google drive [only in collab]
-  --save-csv            save the csv to google drive [only in collab]
+  --savemodel          save the model to google drive [only in collab]
+  --savecsv            save the csv to google drive [only in collab]
 ```
 
 ## Datasets
