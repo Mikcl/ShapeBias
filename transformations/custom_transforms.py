@@ -45,7 +45,7 @@ class Gabor(object):
 
             cwt = cwt_2d(image[:,:,channel], 'gabor', multiplier=1., scales=self.scales, orientations=self.orientations)
             # take cwt.imag or cwt.real ?
-            cwt = cwt.imag
+            cwt = cwt.real
 
             for i in range(cwt.shape[2]):
                 transformed.append(np.uint8(cwt[:,:,i]))

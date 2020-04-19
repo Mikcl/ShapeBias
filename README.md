@@ -118,9 +118,9 @@ Support for CIFAR-10 and CIFAR-100 have been added thus far, which can be utilis
 
         python main.py -a vgg-16 --lr 0.01 --wd 0.0005 --dataset 0
 
-- Train on CIFAR-10 **and** CIFAR-10 **transformed** by a Difference Of Gaussian  and validate on CIFAR-10, and **save** the model into Google Drive with ```--save```
+- Train on CIFAR-10 **and** CIFAR-10 **transformed** by a Difference Of Gaussian  and validate on CIFAR-10, and **save** the model into Google Drive with ```--savemodel```
 
-        python main.py --dataset 0 --concat --DOG --save
+        python main.py --dataset 0 --concat --DOG --savemodel
 
 - Train on **only** CIFAR-10 **transformed** by a 2D Gabor continuous wavelet transform (2D-CWT) and validate **only** on the same transform applied to CIFAR-10 validation, hyperparameter of orientation ```-u 2``` is used for the wavelet.
 
