@@ -4,6 +4,9 @@ An implementation of adding biologically inspired shape bias to popular data set
 
 ## Usage
 
+Ensure all requirements are installed before running experiments: ```pip install -r requirements.txt```
+
+
 ```
 usage: main.py [-h] [-a ARCH] [-j N] [--epochs N] [--start-epoch N] [-b N]
                [--lr LR] [--momentum M] [--wd W] [-p N] [-e] [--pretrained]
@@ -65,8 +68,8 @@ optional arguments:
                         scales (list) for the 2D Gabor Wavelet: -s 2 2.5
   -u U [U ...], --orientations U [U ...]
                         orientations (list) for the 2D Gabor Wavelet: -u 1 2 3
-  --save                save the model and csv to google drive [only in
-                        collab]
+  --save-model          save the model to google drive [only in collab]
+  --save-csv            save the csv to google drive [only in collab]
 ```
 
 ## Datasets
@@ -74,7 +77,7 @@ optional arguments:
 Can perform experiments on various datasets. 
 
 #### Custom
-To utilise custom dataset, use ```--data ./path/to/dataset```, where ```.../dataset/``` contains the directories ```/dataset/train``` and ```/dataset/val``` where images are grouped in directories (representing their class name.
+To utilise a custom dataset, use ```--data ./path/to/dataset```, where ```.../dataset/``` contains the directories ```/dataset/train``` and ```/dataset/val``` where images are grouped in directories (representing their class name).
 
 Example:
 ```
@@ -121,7 +124,7 @@ Support for CIFAR-10 and CIFAR-100 have been added thus far, which can be utilis
 
 - Train on **only** CIFAR-10 **transformed** by a 2D Gabor continuous wavelet transform (2D-CWT) and validate **only** on the same transform applied to CIFAR-10 validation, hyperparameter of orientation ```-u 2``` is used for the wavelet.
 
-    (note: ```-u``` and ```-s``` can take multiple orientations and scales respectively)
+    (note: ```-u``` and ```-s``` can take multiple orientations and scales respectively for the ```--gabor``` 2D Wavelet)
     
 
         python main.py --dataset 0 --same --gabor -u 2

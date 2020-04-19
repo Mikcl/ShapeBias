@@ -60,7 +60,9 @@ def set_args(parser):
                         help='scales (list) for the 2D Gabor Wavelet: -s 2 2.5')
     parser.add_argument('-u','--orientations', nargs='+', default=None, metavar='U',
                         help='orientations (list) for the 2D Gabor Wavelet: -u 1 2 3')
-    parser.add_argument('--save', dest='save', action='store_true',
-                        help='save the model and csv to google drive [only in collab]')
+    parser.add_argument('--save-csv', dest='save-csv', action='store_true',
+                        help='save the csv to google drive [only in collab]')
+    parser.add_argument('--save-model', dest='save', action='store_true',
+                        help='save the model to google drive [only in collab]')
 
     return parser
