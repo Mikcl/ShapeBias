@@ -12,7 +12,8 @@ usage: main.py [-h] [-a ARCH] [-j N] [--epochs N] [--start-epoch N] [-b N]
                [--lr LR] [--momentum M] [--wd W] [-p N] [-e] [--pretrained]
                [--gpu GPU] [--own PATH] [-f] [-l LF] [-c CHANNELS]
                [-d DATASET] [--data DATA] [--concat] [--same] [--DOG]
-               [-o O [O ...]] [--gabor] [-s S [S ...]] [-u U [U ...]] [--save]
+               [-o O [O ...]] [--gabor] [-s S [S ...]] [-u U [U ...]]
+               [--savecsv] [--savemodel]
 
 Shape Bias Training
 
@@ -139,20 +140,22 @@ Support for CIFAR-10 and CIFAR-100 have been added thus far, which can be utilis
 
         python main.py --own ./path/to/model.pth.tar --dataset 1 -f 
 
-- **Evaluate** a **finetuned** model ```./path/finetuned/model.pth.tar``` on a CIFAR-100 dataset 
+- **Evaluate** a **finetuned** model ```./path/finetuned/model.pth.tar``` on a CIFAR-100 dataset. Pass 100 because 100 classes.
 
         python main.py --own ./path/finetuned/model.pth.tar --dataset 1 -l 100 -e 
 
-- **Train** on a **custom** dataset ```./path/finetuned/model.pth.tar``` on a CIFAR-100 dataset 
+- **Train** on a **custom** dataset ```./path/to/dataset/``` 
 
-        python main.py --own ./path/finetuned/model.pth.tar --dataset 1 -l 100 -e 
+        python main.py --data ./path/to/dataset/  
 
 ## Google Collab
 An example of experiments can be found in the following notebook:
 
+https://colab.research.google.com/drive/1BFDiyNS13dC-fLBIgwQpWWxXIJEZdwX0 
+
 
 ## Inspired by PyTorch Image Net Example
-Please reference Image Net Example for details on Multi-processing Distributed Data Parallel Training
+Please see Image Net Example for details on Multi-processing Distributed Data Parallel Training if you wish to extend functionality
 
 
 https://github.com/pytorch/examples/ 
