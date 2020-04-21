@@ -135,10 +135,10 @@ class Experiment(object):
                 valdir = os.path.join(self.directory, 'val')
         
                 train_dataset = self.define_dataset(traindir, transform)
-                test_dataset = define_dataset(valdir, validation_transform)
+                test_dataset = self.define_dataset(valdir, validation_transform)
 
                 if self.concat:
-                    transformed_train_dataset = define_dataset(traindir, additional_transform)
+                    transformed_train_dataset = self.define_dataset(traindir, additional_transform)
                     train_dataset = train_dataset + transformed_train_dataset 
 
         elif self.experiment_dataset == 0:
