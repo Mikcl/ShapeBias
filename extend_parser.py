@@ -42,6 +42,8 @@ def set_args(parser):
                         help='use fintuned own model with defined number of output classes')
     parser.add_argument('-c', '--channels', default=3, type=int,
                         help='number of channels (default: 3)')
+    parser.add_argument('--decay', default=0, type=int, metavar='D',
+                        help='decay learning rate every D epochs by factor of 10')
     parser.add_argument('-d', '--dataset', default=None, type=int,
                         help='which dataset to train on, default- None (define custom path to directory), 0 - CIFAR10, 1 - CIFAR100')
     parser.add_argument('--data', metavar='DATA', default='./',

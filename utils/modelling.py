@@ -37,13 +37,15 @@ def train_model(model, train_dataset, val_loader, start_epoch, epochs, optimizer
         num_workers=args.workers, pin_memory=True, sampler=train_sampler)
 
     best = acc
-
+    optim = optimizer
     for epoch in range(start_epoch, epochs):
         
-        adjust_learning_rate(optimizer, epoch, args)
+        # adjust learning rate
+        if args.decay:
+            optim = adjust_learning_rate(optim, epoch, args)
 
         # train for one epoch
-        train(train_loader, model, criterion, optimizer, epoch, args)
+        train(train_loader, model, criterion, optim, epoch, args)
 
         # evaluate on validation set
         acc = validate(val_loader, model, criterion, args, filename, epoch)
@@ -181,8 +183,8 @@ def save(state, model_name, filename='checkpoint.pth.tar'):
     shutil.copyfile(filename, f'{model_name}.pth.tar')
 
 def adjust_learning_rate(optimizer, epoch, args):
-    """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
-    lr = args.lr * (0.1 ** (epoch // 30))
+    """Sets the learning rate to the initial LR decayed by 10 every args.decay epochs"""
+    lr = args.lr * (0.1 ** (epoch // args.decay))
     for param_group in optimizer.param_groups:
         param_group['lr'] = lr
 
@@ -284,14 +286,6 @@ def get_model(args, initial=False):
         print("=> creating model '{}'".format(args.arch))
 
     model = models.__dict__[args.arch](pretrained=args.pretrained)
-
-    # Expecting a differnt number of input channels (e.g. not 3)
-    if args.channels != 3:
-        # additional_input_layer = [nn.Conv2d(args.channels, 3, kernel_size=3, stride=1, padding=1, dilation=1, groups=1, bias=True)]
-        # additional_input_layer.extend([model.conv1])  
-        # model.conv1 = nn.Sequential(*additional_input_layer ) 
-        model.conv1 = nn.Conv2d(args.channels, 64, kernel_size=7, stride=2, padding=3,
-                               bias=False)
 
     if args.gpu is not None:
         torch.cuda.set_device(args.gpu)
