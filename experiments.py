@@ -26,7 +26,7 @@ class Experiment(object):
         self.orientations = args.orientations
         self.own = args.own
         self.directory = args.data
-
+        self.decay = args.decay
         self.name = self.get_name()
         
     def get_name(self):
@@ -34,9 +34,10 @@ class Experiment(object):
             Given type of experiment, return information about experiment as string.
         '''
         f = 'F' if self.finetune else ''
+        decay = str(self.decay) if self.decay else ''
 
         if self.own and self.finetune:
-            return f + str(self.own)
+            return f + str(self.own) + decay
 
         if self.own:
             return str(own)
@@ -61,7 +62,7 @@ class Experiment(object):
 
 
         name = f + str(self.experiment_dataset) + '-' + str(self.arch) + '-' \
-            + concat_or_same + '-' + transform
+            + concat_or_same + '-' + transform + decay
         
         return name    
 
