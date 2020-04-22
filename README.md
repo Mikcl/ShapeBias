@@ -6,7 +6,7 @@ An implementation of adding biologically inspired shape bias to popular data set
 
 The code is intended to run in Google Colab (Colab), although can be configured if you have your own GPU. 
 
-Open a Colab notebook (or alternatively see the link for a complete set up: https://colab.research.google.com/drive/1UWgWIGu0RCuGbANeQPRXZ_Ta4wYKlmZq)
+Open a Colab notebook (or alternatively see the link for a set up - open in playground to run, may need to connect to GPU [step 1]: https://colab.research.google.com/drive/1UWgWIGu0RCuGbANeQPRXZ_Ta4wYKlmZq)
 
 There are a few key steps to get up and running in the Colab environment. 
 
@@ -130,7 +130,7 @@ Example:
 ...
 ```
 
-To download and format the Tiny ImageNet dataset, run ```./scripts/prep.sh ``` 
+To download and format the Tiny ImageNet dataset, run ```./scripts/prep.sh``` 
 
 #### Torch Vision
 
@@ -144,9 +144,13 @@ Support for CIFAR-10 and CIFAR-100 have been added thus far, which can be utilis
 
 ## Examples
 
-- **Train** vgg-16 (learning rate=0.01, weight_decay=0.0005) on CIFAR-10 and validate on CIFAR-10 
+- **Train** CNN vgg-16 (learning rate=0.01, weight_decay=0.0005) on CIFAR-10 and validate on CIFAR-10 
 
         python main.py -a vgg-16 --lr 0.01 --wd 0.0005 --dataset 0
+
+- Train for 75 **epochs** and reduce the **learning rate** by a factor of 10 every 30 epochs
+
+        python main.py --dataset 0 --decay 30 --epochs 75
 
 - Train on CIFAR-10 **and** CIFAR-10 **transformed** by a Difference Of Gaussian  and validate on CIFAR-10, and **save** the model into Google Drive with ```--savemodel```
 
@@ -177,14 +181,20 @@ Support for CIFAR-10 and CIFAR-100 have been added thus far, which can be utilis
 
         python main.py --data ./path/to/dataset/  
 
-## Google Collab
-An example of experiments can be found in the following notebook:
-Connect to hosted GPU. (runtime -> change runtime type -> Hardware -> GPU)
-https://colab.research.google.com/drive/1UWgWIGu0RCuGbANeQPRXZ_Ta4wYKlmZq 
-
 
 ## Inspired by PyTorch Image Net Example
 Please see Image Net Example for details on Multi-processing Distributed Data Parallel Training if you wish to extend functionality
 
 
 https://github.com/pytorch/examples/ 
+
+## Additional Notes
+
+When attempting to fine tune models, you may find that you will need import the model saved into the colab environment. With large model files this will take considerable time to 'Upload' the file directly to the Colab environment. A more efficient way to do this is (in Colab) to Mount your google drive, from the files section. Then run the script below inside ```./ShapeBias/``` to retrieve ```model.pth.tar``` from your Drive. 
+
+```
+!cp ../drive/My\ Drive/model.pth.tar ./
+```
+
+Which will copy the model into your working directory very quickly.
+Files inside your drive can be found at drive.google.com
