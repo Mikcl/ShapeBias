@@ -49,11 +49,11 @@ def set_args(parser):
     parser.add_argument('--data', metavar='DATA', default='./',
                         help='path to custom dataset and where output folder is')
     parser.add_argument('--concat', dest='concat', action='store_true',
-                        help='concat transformed data with orignal data')
+                        help='concat transformed data with original data')
     parser.add_argument('--same', dest='same', action='store_true',
                         help='train and validated on same (type of transformation) dataset, primarily used from custom transformations') 
     parser.add_argument('--DOG', dest='DOG', action='store_true',
-                        help='DOG transformation, use --options for non default hyper paramaters, [sigma k]')
+                        help='DOG transformation, use --options for non default hyper parameters, [sigma k]')
     parser.add_argument('-o','--options', nargs='+', default=None, metavar='O',
                         help='options (list) for the transformation, pass as: -o s k')
     parser.add_argument('--gabor', dest='gabor', action='store_true',

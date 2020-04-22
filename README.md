@@ -10,7 +10,7 @@ Ensure all requirements are installed before running experiments: ```pip install
 ```
 usage: main.py [-h] [-a ARCH] [-j N] [--epochs N] [--start-epoch N] [-b N]
                [--lr LR] [--momentum M] [--wd W] [-p N] [-e] [--pretrained]
-               [--gpu GPU] [--own PATH] [-f] [-l LF] [-c CHANNELS]
+               [--gpu GPU] [--own PATH] [-f] [-l LF] [-c CHANNELS] [--decay D]
                [-d DATASET] [--data DATA] [--concat] [--same] [--DOG]
                [-o O [O ...]] [--gabor] [-s S [S ...]] [-u U [U ...]]
                [--savecsv] [--savemodel]
@@ -53,15 +53,16 @@ optional arguments:
                         classes
   -c CHANNELS, --channels CHANNELS
                         number of channels (default: 3)
+  --decay D             decay learning rate every D epochs by factor of 10
   -d DATASET, --dataset DATASET
                         which dataset to train on, default- None (define
                         custom path to directory), 0 - CIFAR10, 1 - CIFAR100
   --data DATA           path to custom dataset and where output folder is
-  --concat              concat transformed data with orignal data
+  --concat              concat transformed data with original data
   --same                train and validated on same (type of transformation)
                         dataset, primarily used from custom transformations
   --DOG                 DOG transformation, use --options for non default
-                        hyper paramaters, [sigma k]
+                        hyper parameters, [sigma k]
   -o O [O ...], --options O [O ...]
                         options (list) for the transformation, pass as: -o s k
   --gabor               gabor 2D CWT
@@ -69,8 +70,8 @@ optional arguments:
                         scales (list) for the 2D Gabor Wavelet: -s 2 2.5
   -u U [U ...], --orientations U [U ...]
                         orientations (list) for the 2D Gabor Wavelet: -u 1 2 3
-  --savemodel          save the model to google drive [only in collab]
-  --savecsv            save the csv to google drive [only in collab]
+  --savecsv             save the csv to google drive [only in collab]
+  --savemodel           save the model to google drive [only in collab]
 ```
 
 ## Datasets
@@ -150,8 +151,8 @@ Support for CIFAR-10 and CIFAR-100 have been added thus far, which can be utilis
 
 ## Google Collab
 An example of experiments can be found in the following notebook:
-
-https://colab.research.google.com/drive/1BFDiyNS13dC-fLBIgwQpWWxXIJEZdwX0 
+Connect to hosted GPU. (runtime -> change runtime type -> Hardware -> GPU)
+https://colab.research.google.com/drive/1UWgWIGu0RCuGbANeQPRXZ_Ta4wYKlmZq 
 
 
 ## Inspired by PyTorch Image Net Example
