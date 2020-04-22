@@ -2,6 +2,34 @@
 
 An implementation of adding biologically inspired shape bias to popular data sets, exploring the effects on common CNN architectures.
 
+## Instructions 
+
+The code is intended to run in Google Colab (Colab), although can be configured if you have your own GPU. 
+
+Open a Colab notebook (or alternatively see the link for a complete set up: https://colab.research.google.com/drive/1UWgWIGu0RCuGbANeQPRXZ_Ta4wYKlmZq)
+
+There are a few key steps to get up and running in the Colab environment. 
+
+
+1. Connect to hosted GPU. (runtime -> change runtime type -> Hardware -> GPU)
+2. Download the repository/source code (using git clone preferably)
+3. Install requirements in the cloned repository
+4. Choose dataset, architecture, transformations and other hyperparameters you wish to run \& run command
+
+Example of set up in Colab:
+```
+# Note: '!' in Colab is to run command line 
+# Clone Repository
+!git clone https://github.com/Mikcl/ShapeBias.git
+# Change Directory
+%cd ./ShapeBias/
+# Install Requirements
+!pip install -r requirements.txt
+# Run Experimenent - train a VGG-16 model on dataset 0 (CIFAR-10)
+!python main.py -a vgg-16 --dataset 0
+```
+
+
 ## Usage
 
 Ensure all requirements are installed before running experiments: ```pip install -r requirements.txt```
